@@ -4,7 +4,7 @@
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<title>Hello Gridea | BoildWater</title>
+<title>Linux下安装Apache Server | BoildWater</title>
 
 <link rel="shortcut icon" href="https://Boild-Water.github.io/favicon.ico?v=1608878258259">
 
@@ -202,45 +202,115 @@
         <div class="post-detail gt-bg-theme-color-second">
             <article class="gt-post-content">
                 <h2 class="post-title">
-                    Hello Gridea
+                    Linux下安装Apache Server
                 </h2>
                 <div class="post-info">
                     <time class="post-time gt-c-content-color-first">
-                        · 2018-12-12 ·
+                        · 2020-12-25 ·
                     </time>
-                    
-                        <a href="https://Boild-Water.github.io/tag/gY2b_gTnp/" class="post-tags">
-                            # Gridea
-                        </a>
                     
                 </div>
                 <div class="post-content">
-                    <p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
-✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
-<!-- more -->
-<p><a href="https://github.com/getgridea/gridea">Github</a><br>
-<a href="https://gridea.dev/">Gridea 主页</a><br>
-<a href="http://fehey.com/">示例网站</a></p>
-<h2 id="特性">特性👇</h2>
-<p>📝  你可以使用最酷的 <strong>Markdown</strong> 语法，进行快速创作</p>
-<p>🌉  你可以给文章配上精美的封面图和在文章任意位置插入图片</p>
-<p>🏷️  你可以对文章进行标签分组</p>
-<p>📋  你可以自定义菜单，甚至可以创建外部链接菜单</p>
-<p>💻  你可以在 <strong>Windows</strong>，<strong>MacOS</strong> 或 <strong>Linux</strong> 设备上使用此客户端</p>
-<p>🌎  你可以使用 <strong>𝖦𝗂𝗍𝗁𝗎𝖻 𝖯𝖺𝗀𝖾𝗌</strong> 或 <strong>Coding Pages</strong> 向世界展示，未来将支持更多平台</p>
-<p>💬  你可以进行简单的配置，接入 <a href="https://github.com/gitalk/gitalk">Gitalk</a> 或 <a href="https://github.com/SukkaW/DisqusJS">DisqusJS</a> 评论系统</p>
-<p>🇬🇧  你可以使用<strong>中文简体</strong>或<strong>英语</strong></p>
-<p>🌁  你可以任意使用应用内默认主题或任意第三方主题，强大的主题自定义能力</p>
-<p>🖥  你可以自定义源文件夹，利用 OneDrive、百度网盘、iCloud、Dropbox 等进行多设备同步</p>
-<p>🌱 当然 <strong>Gridea</strong> 还很年轻，有很多不足，但请相信，它会不停向前 🏃</p>
-<p>未来，它一定会成为你离不开的伙伴</p>
-<p>尽情发挥你的才华吧！</p>
-<p>😘 Enjoy~</p>
+                    <h3 id="linux下安装apache-server用于当做个人图片服务器">Linux下安装Apache Server（用于当做个人图片服务器）</h3>
+<h4 id="1安装apache-server">1.安装Apache Server</h4>
+<p>​		下载压缩包编译方式，由于需要下载各种依赖包，解决好依赖问题，才能安装成功，过程较为繁琐，这里直接使用yum方式进行安装，自动解决了依赖包问题</p>
+<pre><code class="language-shell">yum install httpd （安装过程，输入y）
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://raw.githubusercontent.com/Boild-Water/image_from_picgo/main/notes/20201225134843.png" alt="" loading="lazy"></figure>
+<p>​		出现下面页面即表示安装成功</p>
+<figure data-type="image" tabindex="2"><img src="https://raw.githubusercontent.com/Boild-Water/image_from_picgo/main/notes/20201225134952.png" alt="" loading="lazy"></figure>
+<h4 id="2配置apache-server">2.配置Apache Server</h4>
+<p>​		安装成功后，配置文件会被放在/etc/httpd/conf/目录下，进入该目录，编辑配置文件httpd.cnf，最好先备份一下该配置文件。</p>
+<pre><code class="language-shell">cd /usr/httpd/conf/
+cp httpd.cnf httpd_back.cnf
+vim httpd.cnf
+</code></pre>
+<p>​		在配置文件中添加配置项</p>
+<pre><code class="language-xml"># 图片目录 &quot;/opt/images&quot; 指向磁盘的物理地址 标签内表示权限信息
+&lt;Directory &quot;/opt/boildwater/images&quot;&gt;
+    AllowOverride none
+    Require all granted
+&lt;/Directory&gt;
+</code></pre>
+<p>​		在<IfModule alias_module></IfModule>标签下添加别名映射信息，为/opt/boildwater/images指定一个访问别名</p>
+<pre><code class="language-xml">Alias /boildwater/images /opt/boildwater/images
+</code></pre>
+<p>​		配置完成后，配置文件如下所示：</p>
+<pre><code class="language-xml"># 图片目录 &quot;/opt/images&quot; 指向磁盘的物理地址 标签内表示权限信息
+&lt;Directory &quot;/opt/boildwater/images&quot;&gt;
+    AllowOverride none
+    Require all granted
+&lt;/Directory&gt;
+
+&lt;IfModule alias_module&gt;
+    #
+    # Redirect: Allows you to tell clients about documents that used to 
+    # exist in your server's namespace, but do not anymore. The client 
+    # will make a new request for the document at its new location.
+    # Example:
+    # Redirect permanent /foo http://www.example.com/bar
+
+    #
+    # Alias: Maps web paths into filesystem paths and is used to
+    # access content that does not live under the DocumentRoot.
+    # Example:
+    # Alias /webpath /full/filesystem/path
+    #
+    # If you include a trailing / on /webpath then the server will
+    # require it to be present in the URL.  You will also likely
+    # need to provide a &lt;Directory&gt; section to allow access to
+    # the filesystem path.
+
+    #
+    # ScriptAlias: This controls which directories contain server scripts. 
+    # ScriptAliases are essentially the same as Aliases, except that
+    # documents in the target directory are treated as applications and
+    # run by the server when requested rather than as documents sent to the
+    # client.  The same rules about trailing &quot;/&quot; apply to ScriptAlias
+    # directives as to Alias.
+    #
+    ScriptAlias /cgi-bin/ &quot;/var/www/cgi-bin/&quot;
+
+    # 图片地址alias
+    Alias /boildwater/images /opt/boildwater/images
+
+&lt;/IfModule&gt;
+</code></pre>
+<h4 id="3启动apache-server">3.启动Apache Server</h4>
+<p>​		启动apche server （前提是80端口不能被其他服务占用），查看80端口是否被占用</p>
+<pre><code class="language-shell">netstat -atunp
+</code></pre>
+<p>​		确保Local Address没有80端口即可</p>
+<figure data-type="image" tabindex="3"><img src="https://raw.githubusercontent.com/Boild-Water/image_from_picgo/main/notes/20201225135059.png" alt="" loading="lazy"></figure>
+<p>​		启动apache server</p>
+<pre><code class="language-shell">systemctl start httpd.service	
+</code></pre>
+<p>​		为什么确保80端口不被其他服务占用，查看配置文件httpd.cnf能看到apache server的默认端口为80</p>
+<pre><code class="language-xml">#
+# Listen: Allows you to bind Apache to specific IP addresses and/or
+# ports, instead of the default. See also the &lt;VirtualHost&gt;
+# directive.
+#
+# Change this to Listen on specific IP addresses as shown below to 
+# prevent Apache from glomming onto all bound IP addresses.
+#
+#Listen 12.34.56.78:80
+Listen 80
+</code></pre>
+<p>​		所以在启动服务后，直接在浏览器中输入 <strong>ip地址/配置的目录访问别名/xxx.png</strong> 就可以访问到存放的图片资源了，比如我访问图片就是：</p>
+<p><strong>xx.xx.xxx.xx/boildwater/images/demo.png</strong></p>
 
                 </div>
             </article>
         </div>
 
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://Boild-Water.github.io/post/hello-gridea/" class="post-title gt-a-link">
+                    Hello Gridea
+                </a>
+            </div>
         
 
         

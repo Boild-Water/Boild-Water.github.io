@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://Boild-Water.github.io</id>
     <title>BoildWater</title>
-    <updated>2020-12-25T06:31:13.419Z</updated>
+    <updated>2020-12-25T06:37:41.542Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://Boild-Water.github.io"/>
     <link rel="self" href="https://Boild-Water.github.io/atom.xml"/>
@@ -12,8 +12,8 @@
     <rights>All rights reserved 2020, BoildWater</rights>
     <entry>
         <title type="html"><![CDATA[Linux下安装Apache Server]]></title>
-        <id>https://Boild-Water.github.io/post/linux-xia-an-zhuang-apache-serveryong-yu-dang-zuo-ge-ren-tu-pian-fu-wu-qi/</id>
-        <link href="https://Boild-Water.github.io/post/linux-xia-an-zhuang-apache-serveryong-yu-dang-zuo-ge-ren-tu-pian-fu-wu-qi/">
+        <id>https://Boild-Water.github.io/post/linux-xia-an-zhuang-apache-server/</id>
+        <link href="https://Boild-Water.github.io/post/linux-xia-an-zhuang-apache-server/">
         </link>
         <updated>2020-12-25T05:51:51.000Z</updated>
         <content type="html"><![CDATA[<h3 id="linux下安装apache-server用于当做个人图片服务器">Linux下安装Apache Server（用于当做个人图片服务器）</h3>
